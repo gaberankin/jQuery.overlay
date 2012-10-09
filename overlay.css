@@ -1,0 +1,38 @@
+.overlay-bg-element {
+	/* element that spans entire screen to prevent
+		users from being able to click on elements
+		behind the overlay */
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+	background: url('overlay.png');	/* change this if you want to make the background a different color or opacity */
+	z-index: 10000;
+}
+.overlay {
+	/* general overlay container */
+	position:fixed;	/* don't change unless you don't care where the box is positioned */
+	top:50%;
+	left: 50%;
+	width:500px;
+	height: 500px;
+	margin: -250px 0 0 -250px;
+	background: #427053;
+	overflow: auto;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-moz-box-shadow: 2px 2px 20px 6px #333;
+	-webkit-box-shadow: 2px 2px 20px 6px #333;
+	box-shadow: 2px 2px 20px 6px #333;
+	z-index: 10001;
+}
+.overlay .overlay-content {
+	/* container that holds content inside the overlay.
+		if dynamically adding elements to this container,
+		use the 'html' method attached to the plugin:
+			$('opener selector').overlay('html', your_html_here); */
+	padding: 15px;
+}
