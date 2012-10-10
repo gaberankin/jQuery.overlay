@@ -68,6 +68,14 @@
 				});
 			});
 		},
+		'container' : function() {
+			//get a reference to the overlay content container
+			var ret = $([]);
+			this.each(function(){
+				ret.add('#' + this.settings.overlayID + ' .overlay-content');
+			})
+			return ret;
+		},
 		'html' : function(html) {
 			if(typeof(html) == 'undefined' || html == null)
 			{
@@ -128,6 +136,7 @@
 				var callbackReturn = this.settings.onFinish($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
 				if(callbackReturn === false) allowHide = false;
 			});
+
 			if(allowHide)
 				return this.overlay('hide');
 			else

@@ -48,6 +48,10 @@ Additionally, if you want the callbacks to prevent the hide/show actions from ac
 methods
 -------
 
+> .overlay('container');
+
+returns a jquery object containing the content containers in the overlays on the matched elements.
+
 > .overlay('html', [your_html]);
 
 this function will set the contents of the overlay's content container to whatever html you specify.  if html is not specified, then the current html of the overlay's content area will be returned.
