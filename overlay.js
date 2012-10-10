@@ -9,16 +9,20 @@
 					'width'				: 'auto',
 					'height'			: 'auto',
 					'speed'				: null,
-					'onShow'			: $.noop,	//a function that executes when .overlay('show') executes.
+					'onShow'			: function(){ return true; },
+													//a function that executes when .overlay('show') executes.
 													//		it takes 2 arguments - the original object you linked the
 													//		overlay to, and the overlay content container itself.
-					'onHide'			: $.noop,	//a function that executes when .overlay('hide') executes.
+					'onHide'			: function(){ return true; },
+													//a function that executes when .overlay('hide') executes.
 													//		it takes 2 arguments - the original object you linked the
 													//		overlay to, and the overlay content container itself.
-					'onFinish'			: $.noop,	//a function that executes when .overlay('finish') executes.
+					'onFinish'			: function(){ return true; },
+													//a function that executes when .overlay('finish') executes.
 													//		it takes 2 arguments - the original object you linked the
 													//		overlay to, and the overlay content container itself.
-					'onCancel'			: $.noop	//a function that executes when .overlay('cancel') executes.
+					'onCancel'			: function(){ return true; }
+													//a function that executes when .overlay('cancel') executes.
 													//		it takes 2 arguments - the original object you linked the
 													//		overlay to, and the overlay content container itself.
 				}, options);
@@ -86,29 +90,19 @@
 			return this.each(function(){
 				if(this.settings.visible)
 				{
-					$(this).overlay('hide', speed);
-
-					/*if(speed)
-						$('#' + this.settings.overlayID).stop().hide(speed);
-					else
-						$('#' + this.settings.overlayID).stop().hide();
-					this.settings.visible = false;*/
+					$(this).overlay('hide');
 				}
 				else
 				{
-					$(this).overlay('show', speed);
-					/*if(speed)
-						$('#' + this.settings.overlayID).stop().show(speed);
-					else
-						$('#' + this.settings.overlayID).stop().show();
-					this.settings.visible = true;*/
+					$(this).overlay('show');
 				}
 			});
 		},
 		'show' : function(speed) {
 			this.overlay('_setupFixedPoll');
 			return this.each(function(){
-				this.settings.onShow($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
+				var callbackReturn = this.settings.onShow($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
+				if(callbackReturn === false) return;
 				if(speed)
 					$('#' + this.settings.overlayID + '_bg, #' + this.settings.overlayID).stop().show(speed);
 				else
@@ -119,7 +113,8 @@
 		'hide' : function(speed) {
 			this.overlay('_unbindFixedPoll');
 			return this.each(function(){
-				this.settings.onHide($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
+				var callbackReturn = this.settings.onHide($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
+				if(callbackReturn === false) return;
 				if(speed)
 					$('#' + this.settings.overlayID + '_bg, #' + this.settings.overlayID).stop().hide(speed);
 				else
@@ -128,14 +123,26 @@
 			});
 		},
 		'finish' : function() {
-			return this.each(function(){
-				this.settings.onFinish($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
-			}).overlay('hide');
+			var allowHide = true;
+			this.each(function(){
+				var callbackReturn = this.settings.onFinish($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
+				if(callbackReturn === false) allowHide = false;
+			});
+			if(allowHide)
+				return this.overlay('hide');
+			else
+				return this;
 		},
 		'cancel' : function() {
-			return this.each(function(){
-				this.settings.onCancel($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
-			}).overlay('hide');
+			var allowHide = true;
+			this.each(function(){
+				var callbackReturn = this.settings.onCancel($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
+				if(callbackReturn === false) allowHide = false;
+			});
+			if(allowHide)
+				return this.overlay('hide');
+			else
+				return this;
 		},
 		'debug' : function() {
 			return this.each(function(){
@@ -150,7 +157,7 @@
 		},
 		'_setupFixedPoll' : function(){
 			return this.each(function(){
-				if(jQuery.support.positionFixed)
+				if(!jQuery.support.positionFixed)
 				{
 					$(this).overlay('_unbindFixedPoll');
 					var obj = $(this);

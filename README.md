@@ -42,7 +42,8 @@ function that executes when the .overlay('finish') is called.  the function shou
 function that executes when the .overlay('cancel') is called.  the function should take 2 arguments.  the first one is the jQuery object associated with the original element on the page that the overlay plugin was called on.  the second one is the content container of the overlay itself.
 
 ### note
-Regarding onShow, onHide, onFinish, and onCancel - these functions are always called BEFORE the animation is executed.  keep this in mind when checking for visibility
+Regarding onShow, onHide, onFinish, and onCancel - these functions are always called BEFORE the animation is executed.  keep this in mind when checking for visibility.
+Additionally, if you want the callbacks to prevent the hide/show actions from actually happening (like if you've embedded a form in the overlay and it shouldn't close if there are errors), you can prevent the action by returning false in the callback.
 
 methods
 -------
