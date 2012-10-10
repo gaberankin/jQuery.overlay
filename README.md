@@ -25,19 +25,33 @@ if you want to set the dimensions of the overlay.  by default, the dimensions ar
 
 speed of the animation when the overlay is displayed or hidden.  by default, there is no animation.
 
+> 'onShow' : $.noop
+
+function that executes when the .overlay('show') is called.  the function should take 2 arguments.  the first one is the jQuery object associated with the original element on the page that the overlay plugin was called on.  the second one is the content container of the overlay itself.
+
+> 'onHide' : $.noop
+
+function that executes when the .overlay('hide') is called.  the function should take 2 arguments.  the first one is the jQuery object associated with the original element on the page that the overlay plugin was called on.  the second one is the content container of the overlay itself.
+
 > 'onFinish' : $.noop
+
+function that executes when the .overlay('finish') is called.  the function should take 2 arguments.  the first one is the jQuery object associated with the original element on the page that the overlay plugin was called on.  the second one is the content container of the overlay itself.
+
 > 'onCancel' : $.noop
 
-these two options are functions that will be called when the .overlay('finish') and .overlay('cancel') methods are called (respectively).
+function that executes when the .overlay('cancel') is called.  the function should take 2 arguments.  the first one is the jQuery object associated with the original element on the page that the overlay plugin was called on.  the second one is the content container of the overlay itself.
+
+### note
+Regarding onShow, onHide, onFinish, and onCancel - these functions are always called BEFORE the animation is executed.  keep this in mind when checking for visibility
 
 methods
 -------
 
-> .overlay('html', your_html);
+> .overlay('html', [your_html]);
 
-this function will set the contents of the overlay's content container to whatever html you specify.
+this function will set the contents of the overlay's content container to whatever html you specify.  if html is not specified, then the current html of the overlay's content area will be returned.
 
-> .overlay('toggle');
+> .overlay('toggle', [speed]);
 
 this function will display the overlay if it is hidden, and hide it if it is displayed.  it has no relation to .overlay('finish') or .overlay('cancel'), so don't expect your onFinish or onCancel functions to run when you use this.
 

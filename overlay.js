@@ -9,8 +9,18 @@
 					'width'				: 'auto',
 					'height'			: 'auto',
 					'speed'				: null,
-					'onFinish'			: $.noop,
-					'onCancel'			: $.noop
+					'onShow'			: $.noop,	//a function that executes when .overlay('show') executes.
+													//		it takes 2 arguments - the original object you linked the
+													//		overlay to, and the overlay content container itself.
+					'onHide'			: $.noop,	//a function that executes when .overlay('hide') executes.
+													//		it takes 2 arguments - the original object you linked the
+													//		overlay to, and the overlay content container itself.
+					'onFinish'			: $.noop,	//a function that executes when .overlay('finish') executes.
+													//		it takes 2 arguments - the original object you linked the
+													//		overlay to, and the overlay content container itself.
+					'onCancel'			: $.noop	//a function that executes when .overlay('cancel') executes.
+													//		it takes 2 arguments - the original object you linked the
+													//		overlay to, and the overlay content container itself.
 				}, options);
 				this.settings.visible = false;
 				if(this.settings.overlayID == 'auto')
@@ -55,15 +65,28 @@
 			});
 		},
 		'html' : function(html) {
-			return this.each(function(){
-				$('#' + this.settings.overlayID + ' .overlay-content').html(html);
-			});
+			if(typeof(html) == 'undefined' || html == null)
+			{
+				var ret = '';
+				this.each(function(i){
+					if(i == 0)
+						ret = $('#' + this.settings.overlayID + ' .overlay-content').html();
+					else return false;
+				});
+				return ret;
+			}
+			else
+			{
+				return this.each(function(){
+					$('#' + this.settings.overlayID + ' .overlay-content').html(html);
+				});
+			}
 		},
 		'toggle' : function(speed) {
 			return this.each(function(){
 				if(this.settings.visible)
 				{
-					$(this).overlay('hide');
+					$(this).overlay('hide', speed);
 
 					/*if(speed)
 						$('#' + this.settings.overlayID).stop().hide(speed);
@@ -73,7 +96,7 @@
 				}
 				else
 				{
-					$(this).overlay('show');
+					$(this).overlay('show', speed);
 					/*if(speed)
 						$('#' + this.settings.overlayID).stop().show(speed);
 					else
@@ -85,6 +108,7 @@
 		'show' : function(speed) {
 			this.overlay('_setupFixedPoll');
 			return this.each(function(){
+				this.settings.onShow($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
 				if(speed)
 					$('#' + this.settings.overlayID + '_bg, #' + this.settings.overlayID).stop().show(speed);
 				else
@@ -95,6 +119,7 @@
 		'hide' : function(speed) {
 			this.overlay('_unbindFixedPoll');
 			return this.each(function(){
+				this.settings.onHide($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
 				if(speed)
 					$('#' + this.settings.overlayID + '_bg, #' + this.settings.overlayID).stop().hide(speed);
 				else
@@ -104,12 +129,12 @@
 		},
 		'finish' : function() {
 			return this.each(function(){
-				this.settings.onFinish();
+				this.settings.onFinish($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
 			}).overlay('hide');
 		},
 		'cancel' : function() {
 			return this.each(function(){
-				this.settings.onCancel();
+				this.settings.onCancel($(this), $('#' + this.settings.overlayID + ' .overlay-content'));
 			}).overlay('hide');
 		},
 		'debug' : function() {
