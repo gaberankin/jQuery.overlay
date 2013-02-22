@@ -1,5 +1,11 @@
 jQuery.overlay
 ==============
+Why use this when jquery.ui exists?
+-----------------------------------
+I built this for another project because I found it difficult to integrate the jQuery.ui dialog widget into the project.  I felt like I didn't have the kind of control I needed over the element that I needed.
+
+I will be the first to cop to the fact that I may be absolutely wrong and had just been going about using the dialog widget incorrectly, but I also found this to be an extremely useful exersize (this was my first plugin written using methods - everything up to this point had been set up in extremely hacky ways, and this one felt a lot better in its form.
+
 usage
 -----
 > $('selector').overlay();
@@ -83,7 +89,7 @@ removes the overlay
 notes
 -----
 
-This plugin is extremely simple.  I wanted programmers and designers to have full control over the elements using javascript and CSS without having to dig too much into the plugin code itself.  to that end, there is no button to close the overlay.  you will have to add it manually to the html of the overlay, or call on of the close functions in your own code.  I hope that the documentation provided here is sufficient to do that yourself.
+This plugin is extremely simple.  I wanted programmers and designers to have full control over the elements using javascript and CSS without having to dig too much into the plugin code itself.  to that end, there is no button to close the overlay.  you will have to add it manually to the html of the overlay, or call one of the close functions in your own code.  I hope that the documentation provided here is sufficient to do that yourself.
 
 Additionally, I haven't done extensive testing in other browsers outside of chrome, firefox, and IE7+.  I am certain there are issues with it that haven't been caught.  that's what bug reports are for!
 
