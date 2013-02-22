@@ -2,7 +2,7 @@ jQuery.overlay
 ==============
 Why use this when jquery.ui exists?
 -----------------------------------
-I built this for another project because I found it difficult to integrate the jQuery.ui dialog widget into the project.  I felt like I didn't have the kind of control I needed over the element that I needed.
+I built this for another project because I found it difficult to integrate the jQuery.ui dialog widget into.  There was a feeling that I didn't have the kind of control I needed over the element.
 
 I will be the first to cop to the fact that I may be absolutely wrong and had just been going about using the dialog widget incorrectly, but I also found this to be an extremely useful exersize (this was my first plugin written using methods - everything up to this point had been set up in extremely hacky ways, and this one felt a lot better in its form.
 
